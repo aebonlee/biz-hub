@@ -80,6 +80,7 @@ const site: SiteConfig = {
     {
       labelKey: 'site.nav.franchise', path: '/franchise', activePath: '/franchise',
       dropdown: [
+        { path: '/pricing', labelKey: 'site.nav.pricing' },
         { path: '/franchise', labelKey: 'site.nav.franchiseInquiry' },
         { path: '/shop', labelKey: 'shop.title' },
       ]
