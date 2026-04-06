@@ -1,9 +1,11 @@
 /**
- * productStorage.ts — 상품 CRUD (Supabase products 테이블)
- * 템플릿: 본사이트 데이터 의존성 제거, fallback은 빈 배열
+ * productStorage.ts — 상품 CRUD (Supabase biz_products 테이블)
+ * biz-hub 전용: biz_ 접두사 사용
  */
 import type { Product, ProductInput, ProductRow } from '../types';
 import getSupabase from './supabase';
+
+const TABLE = 'biz_products';
 
 // 템플릿: fallback 데이터 없음 (각 사이트에서 Supabase로 관리)
 const fallbackProducts: Product[] = [];
@@ -22,6 +24,7 @@ function toProduct(row: ProductRow): Product {
     isSoldOut: row.is_sold_out,
     isActive: row.is_active,
     sortOrder: row.sort_order,
+    licenseSiteSlug: row.license_site_slug,
     createdAt: row.created_at,
     updatedAt: row.updated_at
   };
@@ -33,7 +36,7 @@ export async function getProducts(includeInactive = false): Promise<Product[]> {
   if (!client) return fallbackProducts;
 
   let query = client
-    .from('products')
+    .from(TABLE)
     .select('*')
     .order('sort_order', { ascending: true })
     .order('id', { ascending: true });
@@ -56,7 +59,7 @@ export async function getProduct(id: number): Promise<Product | null> {
   const client = getSupabase();
   if (!client) return null;
   const { data, error } = await client
-    .from('products')
+    .from(TABLE)
     .select('*')
     .eq('id', Number(id))
     .single();
@@ -72,7 +75,7 @@ export async function createProduct(productData: ProductInput): Promise<Product 
   const client = getSupabase();
   if (!client) return null;
   const { data, error } = await client
-    .from('products')
+    .from(TABLE)
     .insert({
       slug: productData.slug,
       category: productData.category,
@@ -108,7 +111,7 @@ export async function updateProduct(id: number, updates: ProductInput): Promise<
   if (updates.sortOrder !== undefined) payload.sort_order = updates.sortOrder;
 
   const { data, error } = await client
-    .from('products')
+    .from(TABLE)
     .update(payload)
     .eq('id', Number(id))
     .select()

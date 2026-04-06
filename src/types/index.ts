@@ -16,6 +16,7 @@ export interface Product {
   isSoldOut: boolean;
   isActive: boolean;
   sortOrder: number;
+  licenseSiteSlug?: string;
   createdAt: string;
   updatedAt: string;
 }
@@ -33,6 +34,7 @@ export interface ProductRow {
   is_sold_out: boolean;
   is_active: boolean;
   sort_order: number;
+  license_site_slug?: string;
   created_at: string;
   updated_at: string;
 }
@@ -49,6 +51,7 @@ export interface ProductInput {
   isSoldOut?: boolean;
   isActive?: boolean;
   sortOrder?: number;
+  licenseSiteSlug?: string;
 }
 
 // ─── Cart ───
