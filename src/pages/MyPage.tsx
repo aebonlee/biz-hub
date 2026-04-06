@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { updateProfile } from '../utils/auth';
+import { redeemCoupon, getMyActiveCoupons } from '../utils/couponApi';
+import type { MyCoupon } from '../types';
 import SEOHead from '../components/SEOHead';
 import '../styles/auth.css';
 
@@ -16,6 +18,14 @@ const MyPage = (): ReactElement => {
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
 
+  // 쿠폰 상태
+  const [couponCode, setCouponCode] = useState('');
+  const [couponMsg, setCouponMsg] = useState('');
+  const [couponError, setCouponError] = useState(false);
+  const [couponLoading, setCouponLoading] = useState(false);
+  const [myCoupons, setMyCoupons] = useState<MyCoupon[]>([]);
+  const [myCouponsLoading, setMyCouponsLoading] = useState(false);
+
   useEffect(() => {
     if (profile) {
       setForm({
@@ -24,6 +34,35 @@ const MyPage = (): ReactElement => {
       });
     }
   }, [profile]);
+
+  useEffect(() => {
+    if (user?.id) {
+      setMyCouponsLoading(true);
+      getMyActiveCoupons(user.id).then(data => {
+        setMyCoupons(data);
+        setMyCouponsLoading(false);
+      });
+    }
+  }, [user]);
+
+  const handleRedeemCoupon = async () => {
+    if (!couponCode.trim() || !user) return;
+    setCouponLoading(true);
+    setCouponMsg('');
+    setCouponError(false);
+    try {
+      await redeemCoupon(couponCode.trim(), user.id);
+      setCouponMsg('쿠폰이 등록되었습니다!');
+      setCouponCode('');
+      const data = await getMyActiveCoupons(user.id);
+      setMyCoupons(data);
+    } catch (err) {
+      setCouponMsg((err as Error).message);
+      setCouponError(true);
+    } finally {
+      setCouponLoading(false);
+    }
+  };
 
   const handleSave = async () => {
     setSaving(true);
@@ -109,7 +148,87 @@ const MyPage = (): ReactElement => {
               {message && <div className="auth-message">{message}</div>}
             </div>
 
+            {/* 쿠폰 등록 */}
             <div className="mypage-sections">
+              <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 600, color: 'var(--text-main)' }}>
+                쿠폰 등록
+              </h3>
+              <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+                <input
+                  type="text"
+                  value={couponCode}
+                  onChange={e => setCouponCode(e.target.value.toUpperCase())}
+                  placeholder="쿠폰 코드 입력 (예: BIZ-20260407-K3M7)"
+                  style={{
+                    flex: 1, padding: '10px 14px', borderRadius: '10px',
+                    border: '1px solid var(--border-color)', fontSize: '14px',
+                    fontFamily: 'monospace', background: 'var(--bg-white)',
+                    color: 'var(--text-main)'
+                  }}
+                  onKeyDown={e => e.key === 'Enter' && handleRedeemCoupon()}
+                />
+                <button
+                  className="btn btn-primary"
+                  onClick={handleRedeemCoupon}
+                  disabled={couponLoading || !couponCode.trim()}
+                  style={{ padding: '10px 20px', fontSize: '14px', whiteSpace: 'nowrap' }}
+                >
+                  {couponLoading ? '등록 중...' : '등록'}
+                </button>
+              </div>
+              {couponMsg && (
+                <p style={{
+                  fontSize: '13px', marginBottom: '12px',
+                  color: couponError ? '#dc2626' : '#16a34a'
+                }}>
+                  {couponMsg}
+                </p>
+              )}
+
+              {myCouponsLoading ? (
+                <p style={{ color: 'var(--text-light)', fontSize: '14px' }}>로딩 중...</p>
+              ) : myCoupons.length === 0 ? (
+                <p style={{ color: 'var(--text-light)', fontSize: '14px' }}>등록된 쿠폰이 없습니다.</p>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {myCoupons.map(c => {
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    const expired = c.expires_at < todayStr;
+                    const dDay = Math.ceil(
+                      (new Date(c.expires_at).getTime() - Date.now()) / (1000 * 60 * 60 * 24)
+                    );
+                    return (
+                      <div key={c.id} style={{
+                        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                        padding: '12px 16px', background: 'var(--bg-light)', borderRadius: '10px',
+                        border: '1px solid var(--border-color)', opacity: expired ? 0.6 : 1
+                      }}>
+                        <div>
+                          <code style={{ fontFamily: 'monospace', fontSize: '13px', fontWeight: 600, marginRight: '8px' }}>
+                            {c.code}
+                          </code>
+                          <span style={{ fontSize: '13px', color: 'var(--text-light)' }}>
+                            {c.label}
+                          </span>
+                          <div style={{ fontSize: '12px', color: 'var(--text-light)', marginTop: '4px' }}>
+                            이용기간: {c.lecture_date} ~ {c.expires_at}
+                          </div>
+                        </div>
+                        <span style={{
+                          padding: '3px 10px', borderRadius: '9999px', fontSize: '12px', fontWeight: 600,
+                          background: expired ? '#fee2e2' : '#dcfce7',
+                          color: expired ? '#991b1b' : '#166534'
+                        }}>
+                          {expired ? '만료' : `D-${dDay}`}
+                        </span>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
+            </div>
+
+            <div className="mypage-sections" style={{ marginTop: '16px' }}>
               <Link to="/mypage/orders" className="mypage-link-card">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" width="24" height="24">
                   <path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z" />
