@@ -3,9 +3,6 @@ import { getAllMembers, updateMemberStatus } from '../../utils/adminApi';
 
 const LIMIT = 20;
 
-const statusLabel: Record<string, string> = {
-  active: '비활성', suspended: '정지', banned: '차단', deleted: '탈퇴',
-};
 
 const Members = (): ReactElement => {
   const [members, setMembers] = useState<Record<string, unknown>[]>([]);
@@ -36,12 +33,12 @@ const Members = (): ReactElement => {
 
   const handleExpire = async (member: Record<string, unknown>) => {
     const name = (member.display_name as string) || (member.email as string);
-    if (!window.confirm(`${name} 회원의 이용기간을 종료하시겠습니까?`)) return;
+    if (!window.confirm(`${name} 회원을 비활성화하시겠습니까?`)) return;
     try {
-      await updateMemberStatus(member.id as string, 'expired', '기간종료');
+      await updateMemberStatus(member.id as string);
       load();
     } catch (err) {
-      alert('기간종료 실패: ' + (err as Error).message);
+      alert('비활성화 실패: ' + (err as Error).message);
     }
   };
 
@@ -100,8 +97,8 @@ const Members = (): ReactElement => {
                       <td>{formatDate(m.created_at)}</td>
                       <td>{formatDate(m.last_sign_in_at)}</td>
                       <td>
-                        <span className={`admin-badge ${(m.account_status as string) || 'active'}`}>
-                          {statusLabel[(m.account_status as string)] || '비활성'}
+                        <span className={`admin-badge ${m.is_active === false ? 'cancelled' : 'active'}`}>
+                          {m.is_active === false ? '비활성' : '활성'}
                         </span>
                       </td>
                       <td>
