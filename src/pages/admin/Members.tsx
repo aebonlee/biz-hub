@@ -4,7 +4,7 @@ import { getAllMembers, updateMemberStatus } from '../../utils/adminApi';
 const LIMIT = 20;
 
 const statusLabel: Record<string, string> = {
-  active: '활성', suspended: '정지', banned: '차단', deleted: '탈퇴',
+  active: '비활성', suspended: '정지', banned: '차단', deleted: '탈퇴',
 };
 
 const Members = (): ReactElement => {
@@ -110,7 +110,7 @@ const Members = (): ReactElement => {
                       <td>{formatDate(m.last_sign_in_at)}</td>
                       <td>
                         <span className={`admin-badge ${(m.account_status as string) || 'active'}`}>
-                          {statusLabel[(m.account_status as string)] || '활성'}
+                          {statusLabel[(m.account_status as string)] || '비활성'}
                         </span>
                       </td>
                       <td>
@@ -118,7 +118,7 @@ const Members = (): ReactElement => {
                           className="admin-btn admin-btn-sm admin-btn-secondary"
                           onClick={() => openModal(m)}
                         >
-                          상태 변경
+                          기간종료
                         </button>
                       </td>
                     </tr>
@@ -153,12 +153,12 @@ const Members = (): ReactElement => {
       {modal && (
         <div className="admin-modal-overlay" onClick={() => setModal(null)}>
           <div className="admin-modal" onClick={(e) => e.stopPropagation()}>
-            <h3>회원 상태 변경</h3>
+            <h3>회원 기간종료</h3>
             <div className="admin-form">
               <div className="admin-form-group">
                 <label>상태</label>
                 <select value={newStatus} onChange={(e) => setNewStatus(e.target.value)}>
-                  <option value="active">활성</option>
+                  <option value="active">비활성</option>
                   <option value="suspended">정지</option>
                   <option value="banned">차단</option>
                 </select>
