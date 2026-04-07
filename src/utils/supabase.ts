@@ -227,4 +227,24 @@ export const getOrdersByUser = async (userId: string): Promise<Order[]> => {
   return (data || []) as unknown as Order[];
 };
 
+/**
+ * Get user licenses (마이페이지 이용권 현황)
+ */
+export const getUserLicenses = async (userId: string): Promise<Record<string, unknown>[]> => {
+  const client = getSupabase();
+  if (!client) return [];
+
+  const { data, error } = await client
+    .from('user_licenses')
+    .select('*')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false });
+
+  if (error) {
+    console.error('getUserLicenses error:', error);
+    return [];
+  }
+  return data || [];
+};
+
 export default getSupabase;

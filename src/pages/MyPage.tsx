@@ -3,7 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useLanguage } from '../contexts/LanguageContext';
 import { useAuth } from '../contexts/AuthContext';
 import { updateProfile } from '../utils/auth';
-import { redeemCoupon, getMyActiveCoupons } from '../utils/couponApi';
+import { redeemCoupon, getMyActiveCoupons, hasActiveCouponAccess } from '../utils/couponApi';
+import { getUserLicenses } from '../utils/supabase';
 import type { MyCoupon } from '../types';
 import SEOHead from '../components/SEOHead';
 import '../styles/auth.css';
@@ -17,6 +18,11 @@ const MyPage = (): ReactElement => {
   const [form, setForm] = useState({ displayName: '', avatarUrl: '' });
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState('');
+
+  // 이용권 상태
+  const [licenses, setLicenses] = useState<Record<string, unknown>[]>([]);
+  const [licensesLoading, setLicensesLoading] = useState(false);
+  const [hasCouponAccess, setHasCouponAccess] = useState(false);
 
   // 쿠폰 상태
   const [couponCode, setCouponCode] = useState('');
@@ -37,11 +43,17 @@ const MyPage = (): ReactElement => {
 
   useEffect(() => {
     if (user?.id) {
+      setLicensesLoading(true);
+      getUserLicenses(user.id).then(data => {
+        setLicenses(data);
+        setLicensesLoading(false);
+      });
       setMyCouponsLoading(true);
       getMyActiveCoupons(user.id).then(data => {
         setMyCoupons(data);
         setMyCouponsLoading(false);
       });
+      hasActiveCouponAccess(user.id).then(setHasCouponAccess);
     }
   }, [user]);
 
@@ -52,10 +64,16 @@ const MyPage = (): ReactElement => {
     setCouponError(false);
     try {
       await redeemCoupon(couponCode.trim(), user.id);
-      setCouponMsg('쿠폰이 등록되었습니다!');
+      setCouponMsg('쿠폰이 등록되었습니다! 이용권이 활성화됩니다.');
       setCouponCode('');
-      const data = await getMyActiveCoupons(user.id);
-      setMyCoupons(data);
+      // 쿠폰 목록 + 라이선스 목록 + 쿠폰 접근 상태 모두 갱신
+      const [coupons, lics] = await Promise.all([
+        getMyActiveCoupons(user.id),
+        getUserLicenses(user.id),
+      ]);
+      setMyCoupons(coupons);
+      setLicenses(lics);
+      setHasCouponAccess(true);
     } catch (err) {
       setCouponMsg((err as Error).message);
       setCouponError(true);
@@ -148,8 +166,77 @@ const MyPage = (): ReactElement => {
               {message && <div className="auth-message">{message}</div>}
             </div>
 
-            {/* 쿠폰 등록 */}
+            {/* 이용권 현황 */}
             <div className="mypage-sections">
+              <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 600, color: 'var(--text-main)' }}>
+                이용권 현황
+              </h3>
+              {licensesLoading ? (
+                <p style={{ color: 'var(--text-light)', fontSize: '14px' }}>로딩 중...</p>
+              ) : licenses.length === 0 && !hasCouponAccess ? (
+                <div style={{ padding: '20px', background: 'var(--bg-light)', borderRadius: '12px', textAlign: 'center' }}>
+                  <p style={{ color: 'var(--text-light)', fontSize: '14px', marginBottom: '12px' }}>보유한 이용권이 없습니다.</p>
+                  <p style={{ color: 'var(--text-light)', fontSize: '13px' }}>아래에서 쿠폰을 등록하거나 이용권을 구매하세요.</p>
+                </div>
+              ) : (
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                  {/* 쿠폰 기반 이용권 */}
+                  {hasCouponAccess && myCoupons.filter(c => {
+                    const todayStr = new Date().toISOString().split('T')[0];
+                    return c.expires_at >= todayStr;
+                  }).map(c => (
+                    <div key={`coupon-${c.id}`} style={{
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      padding: '12px 16px', background: 'var(--bg-light)', borderRadius: '10px',
+                      border: '1px solid #16a34a40'
+                    }}>
+                      <div>
+                        <span style={{
+                          display: 'inline-block', padding: '2px 8px', borderRadius: '4px', fontSize: '11px',
+                          fontWeight: 600, marginRight: '8px', background: '#16a34a', color: '#fff'
+                        }}>
+                          쿠폰
+                        </span>
+                        <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-main)' }}>
+                          전체 이용권 ({c.label || '쿠폰 등록'})
+                        </span>
+                      </div>
+                      <span style={{ fontSize: '12px', color: 'var(--text-light)' }}>
+                        ~{c.expires_at}
+                      </span>
+                    </div>
+                  ))}
+                  {/* 결제 기반 이용권 */}
+                  {licenses.map((lic) => (
+                    <div key={lic.id as string} style={{
+                      display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                      padding: '12px 16px', background: 'var(--bg-light)', borderRadius: '10px',
+                      border: '1px solid var(--border-color)'
+                    }}>
+                      <div>
+                        <span style={{
+                          display: 'inline-block', padding: '2px 8px', borderRadius: '4px', fontSize: '11px',
+                          fontWeight: 600, marginRight: '8px',
+                          background: lic.license_type === 'bundle' ? 'var(--primary-blue, #2563eb)' : 'var(--accent-color, #f59e0b)',
+                          color: '#fff'
+                        }}>
+                          {lic.license_type === 'bundle' ? '전체' : '개별'}
+                        </span>
+                        <span style={{ fontSize: '14px', fontWeight: 500, color: 'var(--text-main)' }}>
+                          {lic.license_type === 'bundle' ? '전체 이용권' : (lic.site_slug as string)}
+                        </span>
+                      </div>
+                      <span style={{ fontSize: '12px', color: 'var(--text-light)' }}>
+                        {new Date(lic.created_at as string).toLocaleDateString('ko-KR')}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* 쿠폰 등록 */}
+            <div className="mypage-sections" style={{ marginTop: '16px' }}>
               <h3 style={{ marginBottom: '12px', fontSize: '16px', fontWeight: 600, color: 'var(--text-main)' }}>
                 쿠폰 등록
               </h3>
