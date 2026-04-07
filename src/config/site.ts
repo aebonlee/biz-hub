@@ -100,6 +100,7 @@ const site: SiteConfig = {
     { path: '/courses/marketing', labelKey: 'site.nav.marketing' },
     { path: '/courses/digital', labelKey: 'site.nav.digital' },
     { path: '/franchise', labelKey: 'site.nav.franchise' },
+    { path: '/pricing', labelKey: 'site.nav.pricing' },
     { path: '/about', labelKey: 'site.nav.community' },
   ],
 
