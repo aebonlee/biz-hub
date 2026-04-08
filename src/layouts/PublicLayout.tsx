@@ -20,6 +20,9 @@ const Notice = lazy(() => import('../pages/Notice'));
 const QnA = lazy(() => import('../pages/QnA'));
 const Shop = lazy(() => import('../pages/Shop'));
 const Pricing = lazy(() => import('../pages/Pricing'));
+const Quantitative = lazy(() => import('../pages/quantitative/Quantitative'));
+const QualitativeMethods = lazy(() => import('../pages/qualitative-methods/QualitativeMethods'));
+const Ahp = lazy(() => import('../pages/ahp/Ahp'));
 const NotFound = lazy(() => import('../pages/NotFound'));
 
 // Auth 페이지
@@ -62,6 +65,9 @@ const PublicLayout = (): ReactElement => {
             <Route path="/qna" element={<QnA />} />
             <Route path="/shop" element={<Shop />} />
             <Route path="/pricing" element={<Pricing />} />
+            <Route path="/quantitative" element={<Quantitative />} />
+            <Route path="/qualitative-methods" element={<QualitativeMethods />} />
+            <Route path="/ahp" element={<Ahp />} />
 
             {/* Auth */}
             {site.features.auth && (

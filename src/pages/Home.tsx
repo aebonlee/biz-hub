@@ -16,7 +16,7 @@ const Home = (): ReactElement => {
   const { t, language } = useLanguage();
   useAOS();
 
-  const statSites = useCountUp(8, 1500);
+  const statSites = useCountUp(11, 1500);
   const statStudents = useCountUp(300, 2000);
   const statCategories = useCountUp(3, 1500);
   const statCompletion = useCountUp(95, 2000);

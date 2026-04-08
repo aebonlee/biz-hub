@@ -177,6 +177,9 @@ export const translations: Record<string, Record<string, unknown>> = {
         fundamentals: '경영기초',
         accounting: '회계와 재무',
         research: '사회조사방법론',
+        quantitative: '양적연구방법',
+        qualitativeMethods: '질적연구방법',
+        ahp: 'AHP연구방법론',
         management: '경영전략론',
         finance: '재무관리',
         marketing: '마케팅',
@@ -197,7 +200,7 @@ export const translations: Record<string, Record<string, unknown>> = {
       home: {
         title: 'DreamIT Biz Hub',
         subtitle: '경영 학습의 새로운 기준',
-        heroDesc: '회계, 재무, 마케팅, 디지털경영까지 — 경영전공 8개 학습사이트를 하나의 허브에서 만나보세요.',
+        heroDesc: '회계, 재무, 마케팅, 디지털경영까지 — 경영전공 11개 학습사이트를 하나의 허브에서 만나보세요.',
         ctaStart: '강좌 둘러보기',
         ctaFranchise: '사이트 분양 문의',
         statsTitle: 'Biz Hub 현황',
@@ -213,7 +216,7 @@ export const translations: Record<string, Record<string, unknown>> = {
         categoryMarketingDesc: '마케팅 이론부터 셀프 브랜딩까지, 실무 중심 마케팅을 학습합니다.',
         categoryDigitalDesc: 'UX/CX, 디지털 전환, 전략적 기획 등 디지털 시대의 경영을 배웁니다.',
         ctaBottomTitle: '지금 경영 학습을 시작하세요',
-        ctaBottomDesc: '8개 경영전공 학습사이트에서 체계적인 커리큘럼으로 학습할 수 있습니다.',
+        ctaBottomDesc: '11개 경영전공 학습사이트에서 체계적인 커리큘럼으로 학습할 수 있습니다.',
         ctaBottomBtn: '강좌 시작하기'
       },
       courses: {
@@ -522,6 +525,9 @@ export const translations: Record<string, Record<string, unknown>> = {
         fundamentals: 'Business Fundamentals',
         accounting: 'Accounting & Finance',
         research: 'Social Research Methods',
+        quantitative: 'Quantitative Methods',
+        qualitativeMethods: 'Qualitative Methods',
+        ahp: 'AHP Methodology',
         management: 'Strategic Management',
         finance: 'Financial Management',
         marketing: 'Marketing',
@@ -542,7 +548,7 @@ export const translations: Record<string, Record<string, unknown>> = {
       home: {
         title: 'DreamIT Biz Hub',
         subtitle: 'A New Standard for Business Learning',
-        heroDesc: 'From Accounting and Finance to Marketing and Digital Business — explore 8 business learning sites all in one hub.',
+        heroDesc: 'From Accounting and Finance to Marketing and Digital Business — explore 11 business learning sites all in one hub.',
         ctaStart: 'Browse Courses',
         ctaFranchise: 'Franchise Inquiry',
         statsTitle: 'Biz Hub Overview',
@@ -558,7 +564,7 @@ export const translations: Record<string, Record<string, unknown>> = {
         categoryMarketingDesc: 'Learn hands-on marketing from theory to self branding.',
         categoryDigitalDesc: 'Study business in the digital era — UX/CX, digital transformation, and strategic planning.',
         ctaBottomTitle: 'Start Your Business Learning Today',
-        ctaBottomDesc: 'Learn with structured curricula across 8 business learning sites.',
+        ctaBottomDesc: 'Learn with structured curricula across 11 business learning sites.',
         ctaBottomBtn: 'Get Started'
       },
       courses: {
