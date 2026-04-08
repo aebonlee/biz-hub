@@ -1,5 +1,36 @@
 # DEV_LOG - DreamIT Biz Hub
 
+## 2026-04-09 AHP 사용가이드 + 연구 커뮤니티 페이지 추가
+
+### 개요
+AHP연구 플랫폼과 연구 커뮤니티의 전용 소개 페이지를 신규 생성하였다.
+기존 `/courses` 카드 형태에서 벗어나 각각 독립 페이지(`/ahp-guide`, `/papers-community`)로 구성.
+
+### 신규 페이지
+
+| 페이지 | 경로 | 설명 |
+|--------|------|------|
+| AHP 사용가이드 | `/ahp-guide` | AHP 개념, 4단계 사용 흐름, 주요 기능, 활용 사례, CTA(ahp-basic.dreamitbiz.com) |
+| 연구 커뮤니티 | `/papers-community` | 커뮤니티 소개, 주요 기능 4가지, 참여 대상, CTA(papers.dreamitbiz.com) |
+
+### 수정 파일
+
+| 파일 | 변경 내용 |
+|------|-----------|
+| `src/pages/AhpGuide.tsx` | **신규 생성** — AHP 사용 가이드 소개 페이지 |
+| `src/pages/PapersCommunity.tsx` | **신규 생성** — 연구 커뮤니티 소개 페이지 |
+| `src/layouts/PublicLayout.tsx` | lazy import 2개 + Route 2개 추가 (`/ahp-guide`, `/papers-community`) |
+| `src/config/site.ts` | 경영기초 드롭다운에서 `/ahp` 제거, `/ahp-guide`·`/papers-community` 추가; footerLinks 동일 변경 |
+| `src/utils/translations.ts` | ko/en nav 키 2개 추가 (`ahpGuide`, `papersCommunity`), `site.ahpGuide.*`·`site.papersCommunity.*` 번역 키 추가 |
+| `DEV_LOG.md` | 본 항목 추가 |
+
+### 페이지 공통 구조
+- 기존 CSS 클래스 재사용: `page-header`, `edu-mission-grid`, `edu-values-grid`, `edu-value-card`, `cta-section`
+- SEOHead, useAOS, useLanguage 훅 사용
+- 한/영 다국어 지원, 다크모드 호환
+
+---
+
 ## 2026-04-09 신규 학습 경로 3개 추가 (8개 → 11개)
 
 ### 개요

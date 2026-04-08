@@ -61,7 +61,8 @@ const site: SiteConfig = {
         { path: '/courses/research', labelKey: 'site.nav.research' },
         { path: '/quantitative', labelKey: 'site.nav.quantitative' },
         { path: '/qualitative-methods', labelKey: 'site.nav.qualitativeMethods' },
-        { path: '/ahp', labelKey: 'site.nav.ahp' },
+        { path: '/ahp-guide', labelKey: 'site.nav.ahpGuide' },
+        { path: '/papers-community', labelKey: 'site.nav.papersCommunity' },
         { path: '/courses/management', labelKey: 'site.nav.management' },
         { path: '/courses/finance', labelKey: 'site.nav.finance' },
       ]
@@ -108,7 +109,8 @@ const site: SiteConfig = {
     { path: '/about', labelKey: 'site.nav.community' },
     { path: '/quantitative', labelKey: 'site.nav.quantitative' },
     { path: '/qualitative-methods', labelKey: 'site.nav.qualitativeMethods' },
-    { path: '/ahp', labelKey: 'site.nav.ahp' },
+    { path: '/ahp-guide', labelKey: 'site.nav.ahpGuide' },
+    { path: '/papers-community', labelKey: 'site.nav.papersCommunity' },
   ],
 
   familySites: [
