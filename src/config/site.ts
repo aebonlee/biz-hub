@@ -113,7 +113,7 @@ const site: SiteConfig = {
   learningSites: [
     // ── 경영기초 (fundamentals) ──
     {
-      id: 'accounting', name: '회계학 원리', nameEn: 'Accounting Principles', url: '#',
+      id: 'accounting', name: '회계학 원리', nameEn: 'Accounting Principles', url: '#', isService: false,
       icon: 'fa-solid fa-calculator', color: '#059669', category: 'fundamentals',
       description: '재무회계와 관리회계의 기초 원리를 체계적으로 학습합니다.',
       descriptionEn: 'Systematically learn the fundamentals of financial and management accounting.',
@@ -125,7 +125,7 @@ const site: SiteConfig = {
       target: '경영학 전공자, 회계 입문자', targetEn: 'Business majors, accounting beginners',
     },
     {
-      id: 'management', name: '경영전략론', nameEn: 'Management Strategy', url: '#',
+      id: 'management', name: '경영전략론', nameEn: 'Management Strategy', url: '#', isService: false,
       icon: 'fa-solid fa-building', color: '#6D28D9', category: 'fundamentals',
       description: '기업 경영전략의 수립과 실행에 대한 이론과 사례를 학습합니다.',
       descriptionEn: 'Learn theories and cases of corporate strategy formulation and execution.',
@@ -137,7 +137,7 @@ const site: SiteConfig = {
       target: '경영학 전공자, 예비 경영인', targetEn: 'Business majors, aspiring managers',
     },
     {
-      id: 'finance', name: '재무관리', nameEn: 'Financial Management', url: '#',
+      id: 'finance', name: '재무관리', nameEn: 'Financial Management', url: '#', isService: false,
       icon: 'fa-solid fa-coins', color: '#0E7490', category: 'fundamentals',
       description: '기업 재무관리와 투자 분석의 핵심 이론을 학습합니다.',
       descriptionEn: 'Learn core theories of corporate finance and investment analysis.',
