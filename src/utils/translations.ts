@@ -175,7 +175,8 @@ export const translations: Record<string, Record<string, unknown>> = {
       nav: {
         courses: '강좌',
         fundamentals: '경영기초',
-        accounting: '회계학 원리',
+        accounting: '회계와 재무',
+        research: '사회조사방법론',
         management: '경영전략론',
         finance: '재무관리',
         marketing: '마케팅',
@@ -519,7 +520,8 @@ export const translations: Record<string, Record<string, unknown>> = {
       nav: {
         courses: 'Courses',
         fundamentals: 'Business Fundamentals',
-        accounting: 'Accounting Principles',
+        accounting: 'Accounting & Finance',
+        research: 'Social Research Methods',
         management: 'Strategic Management',
         finance: 'Financial Management',
         marketing: 'Marketing',

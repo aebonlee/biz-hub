@@ -58,6 +58,7 @@ const site: SiteConfig = {
       labelKey: 'site.nav.fundamentals', path: '/courses/fundamentals', activePath: '/courses/fundamentals',
       dropdown: [
         { path: '/courses/accounting', labelKey: 'site.nav.accounting' },
+        { path: '/courses/research', labelKey: 'site.nav.research' },
         { path: '/courses/management', labelKey: 'site.nav.management' },
         { path: '/courses/finance', labelKey: 'site.nav.finance' },
       ]
@@ -113,15 +114,15 @@ const site: SiteConfig = {
   learningSites: [
     // ── 경영기초 (fundamentals) ──
     {
-      id: 'accounting', name: '회계학 원리', nameEn: 'Accounting Principles', url: '#', isService: false,
+      id: 'accounting', name: '회계와 재무', nameEn: 'Accounting & Finance', url: 'https://accounting.dreamitbiz.com', isService: false,
       icon: 'fa-solid fa-calculator', color: '#059669', category: 'fundamentals',
-      description: '재무회계와 관리회계의 기초 원리를 체계적으로 학습합니다.',
-      descriptionEn: 'Systematically learn the fundamentals of financial and management accounting.',
-      techStack: ['재무회계', '관리회계', '원가회계', '세무'], difficulty: 'intermediate',
-      curriculum: ['회계의 기본 개념과 원칙', '재무제표의 이해와 분석', '분개와 전기 실습', '원가계산과 관리회계', '세무회계 기초'],
-      curriculumEn: ['Basic accounting concepts and principles', 'Understanding and analyzing financial statements', 'Journal entry and posting practice', 'Cost calculation and management accounting', 'Tax accounting basics'],
-      features: ['실습 문제 풀이', '사례 분석', '자격시험 대비'],
-      featuresEn: ['Practice problem solving', 'Case analysis', 'Certification exam prep'],
+      description: '재무회계, 관리회계, 원가회계, 세무, 재무분석 등 회계와 재무 전 분야를 체계적으로 학습합니다.',
+      descriptionEn: 'Systematically learn all areas of accounting and finance including financial, management, cost, tax accounting, and financial analysis.',
+      techStack: ['재무회계', '관리회계', '원가회계', '세무', '재무분석'], difficulty: 'intermediate',
+      curriculum: ['회계의 기본 개념과 원칙', '재무제표의 이해와 분석', '분개와 전기 실습', '원가계산과 관리회계', '세무회계와 재무분석'],
+      curriculumEn: ['Basic accounting concepts and principles', 'Understanding and analyzing financial statements', 'Journal entry and posting practice', 'Cost calculation and management accounting', 'Tax accounting and financial analysis'],
+      features: ['실습 문제 풀이', '사례 분석', '재무분석 실습'],
+      featuresEn: ['Practice problem solving', 'Case analysis', 'Financial analysis practice'],
       target: '경영학 전공자, 회계 입문자', targetEn: 'Business majors, accounting beginners',
     },
     {
@@ -147,6 +148,18 @@ const site: SiteConfig = {
       features: ['Excel 실습', '투자 시뮬레이션', '재무제표 분석'],
       featuresEn: ['Excel practice', 'Investment simulation', 'Financial statement analysis'],
       target: '경영/금융 전공자, 재무 분석가 지망생', targetEn: 'Finance majors, aspiring financial analysts',
+    },
+    {
+      id: 'research', name: '사회조사방법론', nameEn: 'Social Research Methods', url: 'https://research.dreamitbiz.com',
+      icon: 'fa-solid fa-magnifying-glass-chart', color: '#0284C7', category: 'fundamentals',
+      description: '사회조사방법론의 이론과 실제를 체계적으로 학습합니다. 양적·질적 연구, 설문 설계, 데이터 분석 등을 다룹니다.',
+      descriptionEn: 'Systematically learn theory and practice of social research methods including quantitative/qualitative research, survey design, and data analysis.',
+      techStack: ['양적연구', '질적연구', '설문설계', '통계분석'], difficulty: 'intermediate',
+      curriculum: ['사회조사방법론 기초', '연구 설계와 가설 수립', '설문지 작성과 표본 설계', '데이터 수집과 분석', '연구 보고서 작성'],
+      curriculumEn: ['Social research basics', 'Research design and hypothesis', 'Survey and sampling design', 'Data collection and analysis', 'Research report writing'],
+      features: ['실습 프로젝트', '통계 분석 실습', '연구 사례 분석'],
+      featuresEn: ['Practice projects', 'Statistical analysis practice', 'Research case analysis'],
+      target: '경영/사회과학 전공자, 리서치 종사자', targetEn: 'Business/social science majors, researchers',
     },
     // ── 마케팅 (marketing) ──
     {
